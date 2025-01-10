@@ -17,6 +17,9 @@
 	"autoload": {
 		"psr-4": {
 			"Qce\\CoreBundle\\": "src/"
-		}
+		},
+		"files": [
+			"assets/functions/qce.php"
+		]
 	}
 }
