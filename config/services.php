@@ -26,4 +26,12 @@ return static function ( ContainerConfigurator $container, ContainerBuilder $bui
 			throw new InvalidConfigurationException( sprintf( '%s can only be used on methods or invokable services.', WPHook::class ), previous: $e );
 		}
 	} );
+
+	if(class_exists(\Symfony\Component\Console\Application::class)) {
+		$container
+			->services()
+				 ->set( 'qce_core.console', \Qce\CoreBundle\Console\Console::class )
+		          ->args( [ service( 'kernel' ) ] )
+		          ->tag( 'qce_core.hook', [ 'name' => 'cli_init', 'method' => 'register' ] );
+	}
 };
