@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 return static function ( ContainerConfigurator $container, ContainerBuilder $builder ) {
 	$container
 		->services()
+			->set( '.qce_core.constant_env_var_loader', \Qce\CoreBundle\DependencyInjection\EnvVarLoader::class )
+				->tag( 'container.env_var_loader' )
 			->set( 'qce_core.hooks_manager', \Qce\CoreBundle\Hooks\HooksManager::class )
 				->public()
 				->arg( 0, abstract_arg( 'Liste des hooks à enregistrer.' ) )
