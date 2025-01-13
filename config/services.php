@@ -9,12 +9,26 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 return static function ( ContainerConfigurator $container, ContainerBuilder $builder ) {
 	$container
+		->parameters()
+			->set( 'qce_core.blocks.dir', '%kernel.project_dir%/build/blocks' )
+			->set( 'qce_core.blocks.cache_file', '%kernel.cache_dir%/blocks.php' )
+	;
+
+	$container
 		->services()
-			->set( '.qce_core.constant_env_var_loader', \Qce\CoreBundle\DependencyInjection\EnvVarLoader::class )
+			->set( 'qce_core.constant_env_var_loader', \Qce\CoreBundle\DependencyInjection\EnvVarLoader::class )
 				->tag( 'container.env_var_loader' )
+			->set( 'qce_core.blocks_manager', \Qce\CoreBundle\Blocks\BlocksManager::class )
+		      ->args( [
+					param( 'qce_core.blocks.dir' ),
+			      param( 'qce_core.blocks.cache_file' ),
+			      service( 'config_cache_factory' ),
+				] )
+				->tag( 'qce_core.hook', [ 'name' => 'init', 'method' => 'register_blocks' ] )
+				->tag( 'kernel.cache_warmer' )
 			->set( 'qce_core.hooks_manager', \Qce\CoreBundle\Hooks\HooksManager::class )
 				->public()
-				->arg( 0, abstract_arg( 'Liste des hooks à enregistrer.' ) )
+				->args( [ abstract_arg( 'Liste des hooks à enregistrer.' ) ] )
 	;
 
 	$builder->registerAttributeForAutoconfiguration( WPHook::class, static function ( ChildDefinition $definition, WPHook $hook, \ReflectionMethod|\ReflectionClass $reflector ): void {
