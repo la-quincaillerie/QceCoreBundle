@@ -1,7 +1,11 @@
 <?php
 
 namespace Qce {
-	if ( ! class_exists( Kernel::class ) && trait_exists( \Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait::class ) ) {
+	if (
+		! class_exists( Kernel::class )
+		&& trait_exists( \Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait::class )
+		&& function_exists( 'get_stylesheet_directory' )
+	) {
 		class Kernel extends \Symfony\Component\HttpKernel\Kernel {
 			use \Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 
