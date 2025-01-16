@@ -10,8 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 return static function ( ContainerConfigurator $container, ContainerBuilder $builder ) {
 	$container
 		->parameters()
-			->set( 'qce_core.blocks.dir', '%kernel.project_dir%/build/blocks' )
-			->set( 'qce_core.blocks.cache_file', '%kernel.cache_dir%/blocks.php' )
+			->set( 'qce_core.blocks.path', '%kernel.project_dir%/build/blocks' )
+			->set( 'qce_core.blocks.manifest', '%kernel.cache_dir%/blocks.php' )
 	;
 
 	$container
@@ -20,12 +20,10 @@ return static function ( ContainerConfigurator $container, ContainerBuilder $bui
 				->tag( 'container.env_var_loader' )
 			->set( 'qce_core.blocks_manager', \Qce\CoreBundle\Blocks\BlocksManager::class )
 		      ->args( [
-					param( 'qce_core.blocks.dir' ),
-			      param( 'qce_core.blocks.cache_file' ),
-			      service( 'config_cache_factory' ),
+					param( 'qce_core.blocks.path' ),
+			      param( 'qce_core.blocks.manifest' ),
 				] )
 				->tag( 'qce_core.hook', [ 'name' => 'init', 'method' => 'register_blocks' ] )
-				->tag( 'kernel.cache_warmer' )
 			->set( 'qce_core.hooks_manager', \Qce\CoreBundle\Hooks\HooksManager::class )
 				->public()
 				->args( [ abstract_arg( 'Liste des hooks à enregistrer.' ) ] )

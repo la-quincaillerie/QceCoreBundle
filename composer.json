@@ -1,14 +1,14 @@
 {
 	"name": "qce/core-bundle",
 	"type": "symfony-bundle",
-	"license": "private",
+	"version": "dev-0.1.1",
+	"license": "proprietary",
 	"authors": [
 		{
 			"name": "Louis Boulagnon",
 			"email": "louis@la-quincaillerie.fr"
 		}
 	],
-	"version": "0.1.0",
 	"require": {
 		"php": ">=8.2",
 		"symfony/http-kernel": "^7.2",
