@@ -1,0 +1,47 @@
+<?php
+
+namespace Symfony\Component\Config\Definition\Configurator;
+
+return static function ( DefinitionConfigurator $definition ): void {
+	$definition
+		->rootNode()
+			->children()
+				->arrayNode('assets')
+					->fixXmlConfig('enqueue')
+					->fixXmlConfig('enqueue_script')
+					->fixXmlConfig('enqueue_style')
+					->addDefaultsIfNotSet()
+					->children()
+						->stringNode('build_path')->defaultValue('%kernel.project_dir%/build')->end()
+						->stringNode('blocks_path')->defaultValue('%qce_core.assets.path%/blocks')->end()
+						->stringNode('blocks_manifest')->defaultValue('%qce_core.assets.path%/blocks-manifest.php')->end()
+						->stringNode('prefix')->end()
+						->arrayNode('register')
+							->stringPrototype()->end()
+						->end()
+						->arrayNode('enqueues')
+							->useAttributeAsKey('hook')
+							->arrayPrototype()
+								->beforeNormalization()->castToArray()->end()
+								->stringPrototype()->end()
+							->end()
+						->end()
+						->arrayNode('enqueue_scripts')
+						->useAttributeAsKey('hook')
+							->arrayPrototype()
+								->beforeNormalization()->castToArray()->end()
+								->stringPrototype()->end()
+							->end()
+						->end()
+						->arrayNode('enqueue_styles')
+							->useAttributeAsKey('hook')
+							->arrayPrototype()
+								->beforeNormalization()->castToArray()->end()
+								->stringPrototype()->end()
+							->end()
+						->end()
+					->end()
+				->end()
+			->end()
+	;
+};

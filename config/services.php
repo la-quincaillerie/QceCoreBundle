@@ -9,12 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 return static function ( ContainerConfigurator $container, ContainerBuilder $builder ) {
 	$container
-		->parameters()
-			->set( 'qce_core.blocks.path', '%kernel.project_dir%/build/blocks' )
-			->set( 'qce_core.blocks.manifest', '%kernel.cache_dir%/blocks.php' )
-	;
-
-	$container
 		->services()
 			->set( 'qce_core.constant_env_var_loader', \Qce\CoreBundle\DependencyInjection\EnvVarLoader::class )
 				->tag( 'container.env_var_loader' )
