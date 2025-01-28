@@ -25,15 +25,17 @@ return static function ( ContainerConfigurator $container, ContainerBuilder $bui
 
 	$builder->registerAttributeForAutoconfiguration( WPHook::class, static function ( ChildDefinition $definition, WPHook $hook, \ReflectionMethod|\ReflectionClass $reflector ): void {
 		try {
-			$args           = get_object_vars( $hook );
-			$args['method'] = ( $reflector instanceof \ReflectionClass ? $reflector->getMethod( '__invoke' ) : $reflector )->getName();
+			$args                  = get_object_vars( $hook );
+			$reflector             = ( $reflector instanceof \ReflectionClass ? $reflector->getMethod( '__invoke' ) : $reflector );
+			$args['method']        = $reflector->getName();
+			$args['accepted_args'] ??= $reflector->getNumberOfParameters();
 			$definition->addTag( 'qce_core.hook', $args );
 		} catch ( \ReflectionException $e ) {
 			throw new InvalidConfigurationException( sprintf( '%s can only be used on methods or invokable services.', WPHook::class ), previous: $e );
 		}
 	} );
 
-	if(class_exists(\Symfony\Component\Console\Application::class)) {
+	if ( class_exists( \Symfony\Component\Console\Application::class ) ) {
 		$container
 			->services()
 				 ->set( 'qce_core.console', \Qce\CoreBundle\Console\Console::class )
