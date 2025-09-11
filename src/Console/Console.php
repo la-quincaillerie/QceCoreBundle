@@ -21,8 +21,13 @@ class Console {
 	}
 
 	public function run(): int {
-		array_shift( $_SERVER['argv'] );
-		$input  = new ArgvInput( $_SERVER['argv'] );
+		$args          = $_SERVER['argv'] ?? [];
+		$command_start = array_search( 'qce', $args, true );
+		if ( false === $command_start ) {
+			return 1;
+		}
+
+		$input  = new ArgvInput( array_slice( $args, $command_start ) );
 		$output = new ConsoleOutput();
 
 		$kernel = $this->recreate_kernel( $input );
