@@ -2,7 +2,7 @@
 	"name": "qce/core-bundle",
 	"type": "symfony-bundle",
 	"version": "0.1.4",
-	"license": "proprietary",
+	"license": "MIT",
 	"authors": [
 		{
 			"name": "Louis Boulagnon",
